@@ -1,6 +1,7 @@
 import './_user.scss';
 
 const User = () => {
+  // if (isLoading) return <p>Chargement du profil...</p>;
   return (
     <main className='main bg-dark'>
       <div className='header'>

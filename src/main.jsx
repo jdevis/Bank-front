@@ -14,16 +14,16 @@ import Footer from './components/Footer'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <Header />
       <Router>
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/user" element={<User />} />
           <Route path="*" element={<Error />} />
         </Routes>
+        <Footer />
       </Router>
-      <Footer />
     </Provider>
   </StrictMode>,
 )

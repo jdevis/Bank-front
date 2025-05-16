@@ -1,16 +1,16 @@
-@use 'colors' as *;
-
 html {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: $default-color;
+  color: #2c3e50;
 }
-body{
+
+body {
   margin: 0;
-  padding:0;
+  padding: 0;
 }
+
 #root {
   margin: 0;
   display: flex;
@@ -23,7 +23,7 @@ body{
 }
 
 .bg-dark {
-  background-color: $primary-bg;
+  background-color: #12002b;
 }
 
 .sr-only {
@@ -42,23 +42,25 @@ body{
   white-space: nowrap !important;
   /* 3 */
 }
-.main-notfound{
-    height: 100%;
-    overflow: hidden;
-    margin-bottom: 2em;
-  a{
-    color: $default-color;
-    text-decoration: none;
-    margin-bottom: 2em;
-    :hover{
-      text-decoration: underline;
-    }
-  }
+
+.main-notfound {
+  height: 100%;
+  overflow: hidden;
+  margin-bottom: 2em;
 }
+.main-notfound a {
+  color: #2c3e50;
+  text-decoration: none;
+  margin-bottom: 2em;
+}
+.main-notfound a :hover {
+  text-decoration: underline;
+}
+
 .footer {
   display: flex;
   justify-content: center;
-  border-top: 2px solid $gray;
+  border-top: 2px solid #ccc;
   padding: 2rem 0 1.5rem;
 }
 
@@ -66,3 +68,5 @@ body{
   margin: 0;
   padding: 0;
 }
+
+/*# sourceMappingURL=index.css.map */

@@ -61,7 +61,30 @@
   background-color: $secondary-color;
   color: $secondary-bg;
 }
-
+.edit-form-inputs{
+    display: flex;
+    width: 34%;
+    justify-self: center;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+.edit-form-buttons{
+    display: flex;
+    justify-self: center;
+    padding-left: .5em;
+    button{
+      display: block;
+      width: 100%;
+      padding: 8px;
+      font-weight: bold;
+      border-color: $secondary-color;
+      background-color: $secondary-color;
+      color: $secondary-bg;
+    }
+    :first-child{
+      margin-right: 1.25em;
+    }
+}
 @media (min-width: 720px) {
   .account {
     flex-direction: row;

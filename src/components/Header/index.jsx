@@ -1,17 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useGetProfileQuery } from '../../services/api';
+import { useGetProfileQuery } from '../../app/api/apiSlice';
 import React from 'react';
 import Logo from '../../assets/img/argentBankLogo.png';
 import './_header.scss';
 
 const HeaderElements = () => {
   const navigate = useNavigate()
-  const token = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken')
+  const token = localStorage.getItem('jwtToken')
   const { data: profile, isLoading, isError } = useGetProfileQuery(undefined, { skip: !token })
 
   const handeLogout = () => {
     localStorage.removeItem('jwtToken')
-    sessionStorage.removeItem('jwtToken')
     navigate('/')
   }
   return (
@@ -24,29 +23,29 @@ const HeaderElements = () => {
         />
         <h1 className='sr-only'>Argent Bank</h1>
       </Link>
-      <div>
         {token ? (
           <div className="user_loggedin">
             <div className="user_avatar">
               <i className='fa fa-user-circle'></i>
+              <Link to='/user' className='main-nav-item'>
               <p>{profile?.firstName || 'User'}</p>
+              </Link>
             </div>
-            <button
+            <Link to='/'
               onClick={handeLogout}
-              className="logout-button"
+              className="main-nav-item"
               aria-label="Sign out"
             >
-              <i className="fa-solid fa-right-from-bracket"></i>
+              <i className="fa fa-sign-out"></i>
               Sign Out
-            </button>
+            </Link>
           </div>
         ) : (
           <Link to="/login" className="main-nav-item">
-            <i className='fa fa-user-circle'></i>
+            <i className='fa fa-user-circle padR'></i>
             Sign In
           </Link>
         )}
-      </div>
     </nav>
   )
 }

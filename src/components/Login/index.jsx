@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation, useGetProfileQuery } from '../../services/api';
+import { useLoginMutation, useGetProfileQuery } from '../../app/api/apiSlice';
 import './_login.scss';
 
 // stay logged
@@ -12,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [login, { isLoading, error }] = useLoginMutation();
-  const token = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken');
+  const token = localStorage.getItem('jwtToken')
   const { data: profile } = useGetProfileQuery(undefined, { skip: !token });
 
   const handleSubmit = async (event) => {
@@ -21,7 +21,7 @@ const Login = () => {
       const result = await login({ email: email.trim(), password: password.trim(), rememberMe }).unwrap();
       const accessToken = result.body?.token;
       if (!accessToken) throw new Error('Pas de token');
-      const storage = rememberMe ? localStorage : sessionStorage;
+      const storage = localStorage
       storage.setItem('jwtToken', accessToken);
       navigate('/user');
     } catch (err) {
@@ -29,7 +29,8 @@ const Login = () => {
     }
   };
 
-  return (
+  return token ? (navigate('/user')) : (
+
     <main className='main bg-dark'>
       <section className='sign-in-content'>
         <i className='fa fa-user-circle sign-in-icon'></i>
@@ -37,7 +38,7 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className='input-wrapper'>
             <label htmlFor='username'>Username</label>
-            <input type='text' id='username'
+            <input type='text' id='username' 
               onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className='input-wrapper'>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const Error = () => {
   return (
     <>
-      <main>
+      <main className='main-notfound'>
         <div className="hero">
           <section className="hero-content">
             <h2 className="sr-only">Promoted Content</h2>
@@ -15,10 +15,10 @@ const Error = () => {
             </p>
           </section>
         </div>
-        <div className="notfound_content">
+        <div>
           <h1>404</h1>
           <h2>Page introuvable. Not found.</h2>
-          <Link to="/">Retourner sur la page d’accueil</Link>
+          <Link to="/" className=''>Retourner sur la page d’accueil</Link>
         </div>
       </main>
     </>

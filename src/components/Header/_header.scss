@@ -5,6 +5,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 5px 20px;
+  .user_loggedin{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 15%;
+    .user_avatar{
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .main-nav a {
@@ -19,6 +31,9 @@
 .main-nav-item {
   text-decoration: none;
   margin-right: 0.5rem;
+  .padR{
+    padding-right: .5em;
+  }
 }
 
 .main-nav-item:hover {

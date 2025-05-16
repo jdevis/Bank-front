@@ -1,27 +1,24 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-const BASE_URL = 'http://localhost:3001/api/v1'
+const BASE_URL = 'http://localhost:3001/api/v1' // change this for production
 
-
-export const api = createApi({
+export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers) => {
-      const token =
-        localStorage.getItem('jwtToken') ||
-        sessionStorage.getItem('jwtToken')
+      const token = localStorage.getItem('jwtToken')
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
       }
-      console.log('fetch api: ', headers.get('Authorization'))
+      console.log('api  token: ', headers.get('Authorization'))
       return headers
     },
   }),
-  tagTypes: ['Profile', 'Accounts'],
+  tagTypes: ['userProfile'],
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: ({ email, password }) => {
+      query: ({email, password}) => {
         return {
           url: '/user/login',
           method: 'POST',
@@ -33,6 +30,7 @@ export const api = createApi({
         { email, password, rememberMe },
         { dispatch, queryFulfilled }
       ) {
+        console.log('email: ', email, ' pwd: ', password, ' remerberme: ', rememberMe)
         try {
           const { data } = await queryFulfilled
           const accessToken = data.body?.token
@@ -40,9 +38,9 @@ export const api = createApi({
           const storage = rememberMe ? localStorage : sessionStorage
           storage.setItem('jwtToken', accessToken)
 
-          dispatch(apiSlice.util.invalidateTags(['Profile']))
+          dispatch(apiSlice.util.invalidateTags(['userProfile']))
         } catch (err) {
-          console.error('Erreur lors de la mise à jour du profil : ', err)
+          console.error('Erreur: ', err)
         }
       },
     }),
@@ -53,12 +51,7 @@ export const api = createApi({
         method: 'POST',
       }),
       transformResponse: (response) => response.body,
-      providesTags: ['Profile'],
-    }),
-
-    getAccounts: builder.query({
-      query: (userId) => `/accounts?userId=${userId}`,
-      providesTags: ['Accounts'],
+      providesTags: ['userProfile'],
     }),
 
     updateProfile: builder.mutation({
@@ -67,14 +60,13 @@ export const api = createApi({
         method: 'PUT',
         body: updatedData,
       }),
-      invalidatesTags: ['Profile'],
-    }),
+      invalidatesTags: ['userProfile'],
+    })
   }),
 })
 
 export const {
   useLoginMutation,
   useGetProfileQuery,
-  useGetAccountsQuery,
   useUpdateProfileMutation,
-} = api
+} = apiSlice

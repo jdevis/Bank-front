@@ -1,0 +1,300 @@
+swagger: '2.0'
+info:
+  title: Transactions API - Argent Bank
+  description: Documentation of API endpoints for transaction management
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /user/{userId}/transactionsList:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions
+      summary: Retrieve transactions list of a specific user
+      description: Retrieve all transactions for the current month, grouped by account
+      parameters:
+        - in: path
+          name: userId
+          description: User ID of transactions list owner
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          description: Bearer JWT token
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful. Returns a list of transactions grouped by account.
+          schema:
+            $ref: '#/definitions/TransactionsList'
+          examples:
+            application/json:
+              - accountId: '0123xx45'
+                date: '2025-05-04T10:45:00Z'
+                description: 'Lorem Ipsum'
+                amount: 5.00
+                balance: 2082.79
+                isCredit: false
+              - accountId: '0456xx12'
+                date: '2025-05-05T10:45:00Z'
+                description: 'Lorem Ipsum'
+                amount: 150.00
+                balance: 2232.79
+                isCredit: true
+        '400':
+            description: Invalid Fields or missing token
+        '500':
+            description: Internal Server Error
+  /user/{userId}/transactionsList/{transactionId}:
+      get:
+          security:
+              - Bearer: []
+          tags:
+              - Transactions
+          summary: Transaction details
+          description: Retrieve the details of a specific transaction
+          parameters:
+              - in: path
+                name: userId
+                description: User ID of transaction owner
+                required: true
+                type: string
+              - in: path
+                name: transactionId
+                description: ID of the transaction to retrieve
+                type: string
+                required: true
+              - in: header
+                name: Authorization
+                description: Bearer JWT token
+                required: true
+                type: string
+          produces:
+              - application/json
+          responses:
+              '200':
+                  description: Transaction details successfully retrieved.
+                  schema:
+                      $ref: '#/definitions/TransactionDetails'
+                  examples:
+                      application/json:
+                          - transactionId: '67891'
+                            transactionType: 'Electronic'
+                            category: 'Food'
+                            notes: 'weekly'
+              '400':
+                  description: Invalid Fields or missing token
+              '403':
+                  description: Forbidden. User not authorized to access this transaction
+              '500':
+                  description: Internal Server Error
+      post:
+          security:
+              - Bearer: []
+          tags:
+              - Transactions
+          summary: Add transaction details
+          description: Add details of a transaction
+          parameters:
+              - in: path
+                name: userId
+                description: User ID of transaction owner
+                required: true
+                type: string
+              - in: path
+                name: transactionId
+                required: true
+                description: Transaction ID on which to add details
+                type: string
+              - in: header
+                name: Authorization
+                description: Bearer JWT token
+                required: true
+                type: string
+              - in: body
+                name: body
+                description: Add transaction details
+                required: true
+                schema:
+                    $ref: '#/definitions/TransactionDetails'
+          produces:
+              - application/json
+          responses:
+              '200':
+                  description: The details of transaction was successfully added
+                  schema:
+                      $ref: '#/definitions/TransactionDetails'
+                  examples:
+                      application/json:
+                          - transactionId: '12345'
+                            transactionType: 'Electronic'
+                            category: 'Entertainment '
+                            notes: 'Birthday'
+              '400':
+                  description: Invalid Fields
+              '403':
+                  description: Forbidden. User not authorized to add details on this transaction.
+              '500':
+                  description: Internal Server Error
+      put:
+          security:
+              - Bearer: []
+          tags:
+              - Transactions
+          summary: Update transaction details
+          description: Updating details of a transaction
+          parameters:
+              - in: path
+                name: userId
+                description: User ID of transaction owner
+                required: true
+                type: string
+              - in: path
+                name: transactionId
+                required: true
+                description: Transaction ID on which to update details
+                type: string
+              - in: header
+                name: Authorization
+                description: Bearer JWT token
+                required: true
+                type: string
+              - in: body
+                name: body
+                description: Update transaction details
+                required: true
+                schema:
+                    $ref: '#/definitions/TransactionDetails'
+          produces:
+              - application/json
+          responses:
+              '200':
+                  description: The details of transaction was successfully updated
+                  schema:
+                      $ref: '#/definitions/TransactionDetails'
+                  examples:
+                      application/json:
+                          - transactionId: '12345'
+                            transactionType: 'Electronic'
+                            category: 'Entertainment '
+                            notes: 'Jon birthday gift'
+              '400':
+                  description: Invalid Fields
+              '403':
+                  description: Forbidden. User not authorized to update details on this transaction.
+              '500':
+                  description: Internal Server Error
+      delete:
+          security:
+              - Bearer: []
+          tags:
+              - Transactions
+          summary: Delete transaction details
+          description: Deleting details of a transaction
+          parameters:
+              - in: path
+                name: userId
+                description: User ID of transaction owner
+                required: true
+                type: string
+              - in: path
+                name: transactionId
+                required: true
+                description: Transaction ID on which to delete details
+                type: string
+              - in: header
+                name: Authorization
+                description: Bearer JWT token
+                required: true
+                type: string
+              
+          produces:
+              - application/json
+          responses:
+              '200':
+                  description: The details of transaction was successfully deleted
+                  schema:
+                      $ref: '#/definitions/TransactionDetailsDelete'
+                  examples:
+                      application/json:
+                          - transactionId: '67891'
+                            deleted: 'true'
+              '400':
+                  description: Invalid Fields
+              '403':
+                  description: Forbidden. User not authorized to delete details on this transaction.
+              '500':
+                  description: Internal Server Error
+securityDefinitions:
+  Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+definitions:
+  TransactionsList: 
+      type: array
+      items:
+          $ref: '#/definitions/Transaction'
+  Transaction:
+      type: object
+      properties:
+          accountId:
+              type: string
+              description: Account ID for the transaction
+          date:
+              type: string
+              format: date-time
+              description: Date of the transaction
+          description:
+              type: string
+              description: Description of the transaction
+          amount:
+              type: number
+              format: float
+              description: Amount of the transaction
+          balance:
+              type: number
+              format: float
+              description: Remaining balance after the transaction
+  TransactionDetails:
+      type: object
+      properties:
+          transactionId:
+              type: string
+              description: ID of the transaction
+          transactionType:
+              type: string
+              description: Type of the transaction
+          category:
+              type: string
+              description: Category of the transaction
+          notes:
+              type: string
+              description: Notes for the transaction
+  TransactionDetailsDelete:
+      type: object
+      properties:
+          transactionId:
+              type: string
+              description: ID of the transaction
+          deleted:
+              type: boolean
+              description: boolean of succeed
+  ApiResponse:
+      type: object
+      properties:
+          status:
+              type: integer
+          message:
+              type: string
+          data:
+              type: object
+              description: Response body, structure depends on the endpoint

@@ -6,11 +6,12 @@ import './_header.scss';
 
 const HeaderElements = () => {
   const navigate = useNavigate()
-  const token = localStorage.getItem('jwtToken')
+  const token = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken')
   const { data: profile, isLoading, isError } = useGetProfileQuery(undefined, { skip: !token })
 
   const handeLogout = () => {
     localStorage.removeItem('jwtToken')
+    sessionStorage.removeItem('jwtToken')
     navigate('/')
   }
   return (

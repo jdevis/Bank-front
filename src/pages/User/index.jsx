@@ -1,6 +1,9 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGetProfileQuery, useUpdateProfileMutation } from '../../app/api/apiSlice'
+
+import models from '../../common/models.js';
+import Card from '../../components/Card';
 import './_user.scss';
 
 const User = () => {
@@ -13,6 +16,7 @@ const User = () => {
   const [lastname, setLastname] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [success, setSuccess] = useState('');
+  const { accounts } = models
 
   useEffect(() => {
     if (profile) {
@@ -64,7 +68,6 @@ const User = () => {
   return (
     <main className='main bg-dark'>
       <div className='header'>
-
         <h1>Welcome back<br />{profile?.firstName} {profile?.lastName}</h1>
         {isEditing ? (
           <form onSubmit={handleUpdateProfile} className="profile-form">
@@ -104,7 +107,7 @@ const User = () => {
           </form>
         ) : (
           <>
-          {success && <p className="success-message">{success}</p>}
+            {success && <p className="success-message">{success}</p>}
             <button className="edit-button" onClick={handleEditClick}>
               Edit Name
             </button>
@@ -113,37 +116,15 @@ const User = () => {
 
       </div>
       <h2 className='sr-only'>Accounts</h2>
-      {/* text dans models */}
-      <section className='account'>
-        <div className='account-content-wrapper'>
-          <h3 className='account-title'>Argent Bank Checking (x8349)</h3>
-          <p className='account-amount'>$2,082.79</p>
-          <p className='account-amount-description'>Available Balance</p>
-        </div>
-        <div className='account-content-wrapper cta'>
-          <button className='transaction-button'>View transactions</button>
-        </div>
-      </section>
-      <section className='account'>
-        <div className='account-content-wrapper'>
-          <h3 className='account-title'>Argent Bank Savings (x6712)</h3>
-          <p className='account-amount'>$10,928.42</p>
-          <p className='account-amount-description'>Available Balance</p>
-        </div>
-        <div className='account-content-wrapper cta'>
-          <button className='transaction-button'>View transactions</button>
-        </div>
-      </section>
-      <section className='account'>
-        <div className='account-content-wrapper'>
-          <h3 className='account-title'>Argent Bank Credit Card (x8349)</h3>
-          <p className='account-amount'>$184.30</p>
-          <p className='account-amount-description'>Current Balance</p>
-        </div>
-        <div className='account-content-wrapper cta'>
-          <button className='transaction-button'>View transactions</button>
-        </div>
-      </section>
+      {accounts.map((account, index) => (
+        <Card
+          key={index}
+          amount={account.amount}
+          title={account.title}
+          desc={account.description}
+          icon=''
+        />
+      ))}
     </main>
   )
 }

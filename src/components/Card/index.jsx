@@ -1,7 +1,4 @@
 const Card = ({title, amount,icon, desc}) => {
-  console.log('dans card titre: ',title)
-  console.log('dans card amount: ',amount)
-  console.log('dans card desc: ',desc)
 
   if (icon !== '') {
     return <div className='feature-item'>
@@ -26,4 +23,4 @@ const Card = ({title, amount,icon, desc}) => {
       </section>
 }
 
-export default Card
+export default Card 

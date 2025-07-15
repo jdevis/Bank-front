@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from '../../app/api/apiSlice';
 import './_login.scss';
@@ -10,6 +10,12 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [login, { isLoading, error }] = useLoginMutation();
   const token = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken')
+  // Redirection if already logged in
+  useEffect(() => {
+    if (token) {
+      navigate('/user');
+    }
+  }, [token, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,8 +30,7 @@ const Login = () => {
       console.error("Erreur de connexion:", err);
     }
   };
-//useEffect pour navigate /user sinon render login form
-  return token ? (navigate('/user')) : (
+  return (
 
     <main className='main bg-dark'>
       <section className='sign-in-content'>
@@ -54,10 +59,10 @@ const Login = () => {
             </p>
           }
 
-          {isLoading 
+          {isLoading
             ?
             <button className='sign-in-button' disabled>Chargement...</button>
-            : 
+            :
             <button className='sign-in-button'>Sign In</button>
           }
         </form>

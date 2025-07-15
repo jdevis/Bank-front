@@ -11,7 +11,6 @@ const User = () => {
   const { data: profile, error, isLoading, refetch } = useGetProfileQuery();
   const [updateProfile] = useUpdateProfileMutation();
   const [isEditing, setIsEditing] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -38,7 +37,6 @@ const User = () => {
 
   const handleCancelClick = useCallback(() => {
     setIsEditing(false);
-    setHasChanges(false);
     setFirstname(profile?.firstName || '');
     setLastname(profile?.lastName || '');
   }, [profile]);
@@ -51,11 +49,8 @@ const User = () => {
     try {
       const updatedData = { firstName: firstname, lastName: lastname };
       await updateProfile(updatedData).unwrap();
-
       setSuccess('Profil mis à jour avec succès');
       setIsEditing(false);
-      setHasChanges(false);
-
       refetch();
     } catch (err) {
       console.error('Erreur mise à jour du profil :', err);
@@ -79,7 +74,6 @@ const User = () => {
                 value={firstname}
                 onChange={(e) => {
                   setFirstname(e.target.value);
-                  setHasChanges(true);
                 }}
                 placeholder="Prénom"
                 autoComplete="given-name"
@@ -91,7 +85,6 @@ const User = () => {
                 value={lastname}
                 onChange={(e) => {
                   setLastname(e.target.value);
-                  setHasChanges(true);
                 }}
                 placeholder="Nom"
                 autoComplete="family-name"

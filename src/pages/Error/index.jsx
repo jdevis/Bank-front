@@ -18,7 +18,7 @@ const Error = () => {
         <div>
           <h1>404</h1>
           <h2>Page introuvable. Not found.</h2>
-          <Link to="/" className=''>Retourner sur la page d’accueil</Link>
+          <Link to="/" className=''>Retourner sur la page d'accueil</Link>
         </div>
       </main>
     </>
